@@ -66,6 +66,7 @@ noremap <LEADER>l :bnext<CR>
 imap <> <><Left>
 imap () ()<Left>
 imap {} {}<Left>
+imap "" ""<Left>
 
 map S :w<CR>
 map Q :q<CR>
@@ -83,6 +84,35 @@ nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
 "au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 "au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
+" 大括号自动分行, C/C++下的自动命令
+autocmd BufWritePre,BufRead *.c :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
+autocmd BufWritePre,BufRead *.cpp :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
+function BracketsEnter(char)
+    if getline('.')[col('.')-1] == a:char
+        return "\<Enter>\<Tab>\<Esc>mpa\<Enter>\<Esc>`pa" 
+    else
+        return "\<Enter>"
+    endif
+endf
+
+
+" Compile function
+map <F5> :call CompileRunGcc()<CR>
+
+func! CompileRunGcc()
+    exec "w" 
+    if &filetype == 'c' 
+        exec '!g++ % -o %<'
+        exec '!time ./%<'
+    elseif &filetype == 'cpp'
+        exec '!g++ % -o %<'
+        exec '!time ./%<'
+    elseif &filetype == 'python'
+        exec '!time python %'
+    elseif &filetype == 'sh'
+        :!time bash %
+    endif                                                                              
+endfunc 
 
 
 "插件安装
@@ -99,6 +129,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-clang-format'
 Plug 'scrooloose/nerdcommenter' 
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 
