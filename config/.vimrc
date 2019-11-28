@@ -129,6 +129,8 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-clang-format'
 Plug 'scrooloose/nerdcommenter' 
+"git 
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 call plug#end()
 
@@ -227,6 +229,8 @@ let g:ycm_key_list_stop_completion = ['<CR>']
 "在其中的compilation_database_folder添加./build目录
 
 
+" gitgutter
+set updatetime=100
 
 """"""
 "主题设置
