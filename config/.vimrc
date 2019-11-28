@@ -51,8 +51,18 @@ set ignorecase
 set smartcase
 "开启语法高亮功能  
 syntax on
+" Copy to system clipboard
+vnoremap Y "+y
 
 let mapleader =" "
+" ===
+" === Cursor Movement
+" ===
+" "     ^
+" "     i
+" " < j   l >
+" "     k
+" "     v
 noremap h i
 noremap H I
 noremap j h
@@ -73,6 +83,7 @@ map Q :q<CR>
 map R :source $MYVIMRC<CR>
 map lh ^
 map le $
+
 "在当前行上方添加空行，可以接数字
 nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
@@ -81,8 +92,8 @@ nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
 
 "交换CapsLock与CapsLock的键位
-"au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-"au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
 " 大括号自动分行, C/C++下的自动命令
 autocmd BufWritePre,BufRead *.c :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
@@ -111,6 +122,8 @@ func! CompileRunGcc()
         exec '!time python %'
     elseif &filetype == 'sh'
         :!time bash %
+    elseif &filetype == 'markdown'
+        exec "MarkdownPreview"
     endif                                                                              
 endfunc 
 
@@ -132,12 +145,24 @@ Plug 'scrooloose/nerdcommenter'
 "git 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+
+"Markdown preview
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
 call plug#end()
 
 
 "一个操作加一个动作
 "例如d 1 j(左)
 
+
+"Markdown Preview
+let g:mkdp_auto_close = 1
+let g:mkdp_page_title = '「${name}」'
+nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
+imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
+nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
+imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
 
 
 "注释插件,加半个空格
