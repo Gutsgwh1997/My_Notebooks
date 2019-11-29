@@ -73,11 +73,6 @@ noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>j :bNext<CR>
 noremap <LEADER>l :bnext<CR>
 
-imap <> <><Left>
-imap () ()<Left>
-imap {} {}<Left>
-imap "" ""<Left>
-
 map S :w<CR>
 map Q :q<CR>
 map R :source $MYVIMRC<CR>
@@ -90,21 +85,10 @@ nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 "当前行上移动\下移
 nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
-
 "交换CapsLock与CapsLock的键位
 au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
-" 大括号自动分行, C/C++下的自动命令
-autocmd BufWritePre,BufRead *.c :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
-autocmd BufWritePre,BufRead *.cpp :inoremap <Enter> <c-r>=BracketsEnter('}')<CR>
-function BracketsEnter(char)
-    if getline('.')[col('.')-1] == a:char
-        return "\<Enter>\<Tab>\<Esc>mpa\<Enter>\<Esc>`pa" 
-    else
-        return "\<Enter>"
-    endif
-endf
 
 
 " Compile function
@@ -142,6 +126,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-clang-format'
 Plug 'scrooloose/nerdcommenter' 
+Plug 'Raimondi/delimitMate'
 "git 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -159,8 +144,8 @@ call plug#end()
 "Markdown Preview
 let g:mkdp_auto_close = 1
 let g:mkdp_page_title = '「${name}」'
-nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
-imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
+" nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
+" imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
 imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
 
@@ -180,7 +165,7 @@ autocmd FileType c,cpp,objc vnoremap <buffer><C-k> :ClangFormat<CR>
 nmap fil :DoxAuthor<CR>
 nmap fun :Dox<CR>
 
-""将F2设置为开关NERDTree的快捷键
+""将F3设置为开关NERDTree的快捷键
 map <F3> :NERDTreeMirror<CR>
 map <F3> :NERDTreeToggle<CR>
 ""修改树的显示图标
@@ -222,6 +207,8 @@ let g:NERDTreeIndicatorMapCustom = {
 """""""""""""
 "配置默认文件路径
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+"让ycm的补全菜单与一般IDE一样
+"set completeopt=longest,menu
 " turn off YCM
 nnoremap <leader>b :let g:ycm_auto_trigger=0<CR>                
 " turn on YCM
@@ -247,7 +234,8 @@ let g:ycm_goto_buffer_command = 'horizontal-split'
 let g:ycm_show_diagnostics_ui = 1 
 " 跳转到定义
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
-let g:ycm_key_list_stop_completion = ['<CR>']
+"let g:ycm_key_list_stop_completion = ['<CR>']
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 "配合CMake使用，在CMakeList中添加
 "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 "并将ycm_extra_conf.py拷贝到../build
@@ -264,12 +252,10 @@ set t_Co=256
 "snazzy透明
 let g:SnazzyTransparent = 1
 let g:airline#extensions#tabline#enabled = 1
-
 "molokai
 "colorschem molokai
 let g:rehash256 = 1
 let g:molokai_original = 1
-
 "gruvbox 
 colorscheme gruvbox
 set background=dark
