@@ -72,11 +72,12 @@ noremap i k
 noremap <LEADER><CR> :nohlsearch<CR>
 noremap <LEADER>j :bNext<CR>
 noremap <LEADER>l :bnext<CR>
+noremap <LEADER>d :bdelete<CR>
 
 map S :w<CR>
 map Q :q<CR>
-map R :source $MYVIMRC<CR>
-map lh ^
+map RE :source $MYVIMRC<CR>
+map lg ^
 map le $
 
 "在当前行上方添加空行，可以接数字
@@ -86,9 +87,27 @@ nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
 "交换CapsLock与CapsLock的键位
-au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
+" au VimEnter * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+" au VimLeave * silent! !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
 
+
+" 分屏
+function! Zoom ()
+    " check if is the zoomed state (tabnumber > 1 && window == 1)
+    if tabpagenr('$') > 1 && tabpagewinnr(tabpagenr(), '$') == 1
+        let l:cur_winview = winsaveview()
+        let l:cur_bufname = bufname('')
+        tabclose
+
+        " restore the view
+        if l:cur_bufname == bufname('')
+            call winrestview(cur_winview)
+        endif
+    else
+        tab split
+    endif
+endfunction
+nmap <leader>z :call Zoom()<CR>
 
 
 " Compile function
@@ -144,8 +163,8 @@ call plug#end()
 "Markdown Preview
 let g:mkdp_auto_close = 1
 let g:mkdp_page_title = '「${name}」'
-" nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
-" imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
+nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
+imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
 imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
 
@@ -207,8 +226,6 @@ let g:NERDTreeIndicatorMapCustom = {
 """""""""""""
 "配置默认文件路径
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-"让ycm的补全菜单与一般IDE一样
-"set completeopt=longest,menu
 " turn off YCM
 nnoremap <leader>b :let g:ycm_auto_trigger=0<CR>                
 " turn on YCM
@@ -234,6 +251,8 @@ let g:ycm_goto_buffer_command = 'horizontal-split'
 let g:ycm_show_diagnostics_ui = 1 
 " 跳转到定义
 nnoremap <Leader>g :YcmCompleter GoTo<CR>
+" Fixit
+nnoremap <Leader>y :YcmCompleter FixIt<CR>
 "let g:ycm_key_list_stop_completion = ['<CR>']
 imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 "配合CMake使用，在CMakeList中添加
