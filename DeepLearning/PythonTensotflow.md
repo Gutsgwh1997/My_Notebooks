@@ -78,7 +78,7 @@ print weights2.name
     [信息熵、交叉熵的理解](https://blog.csdn.net/tsyccnh/article/details/79163834 "CSDN博客")
     [tf中交叉熵的计算](https://www.jianshu.com/p/95d0dd92a88a "简书中手动和调用API计算熵")
     [测试代码](/home/gwh/Desktop/tensorflow/test code/交叉熵的计算.py) 
-5. **tf.nn.in_top_k(predictions,targets,K)**检测每个样本前K个最大数对应的标签是否包含在targets里边
+5. **tf.nn.in_top_k(predictions,targets,K)**检测每个样本前K个最大数对应的标签(索引)是否包含在targets里边
 ```python
 import tensorflow as tf;
  
