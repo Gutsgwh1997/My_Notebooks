@@ -145,14 +145,14 @@ map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w" 
     if &filetype == 'c' 
-        exec '!g++ % -o %<'
+        exec '!gcc -O3 % -o %<'
         exec '!time ./%<'
     elseif &filetype == 'cpp'
         set splitbelow
-		exec "!g++ -std=c++11 % -Wall -o %<"
+        exec "!g++ -O3 -std=c++11 % -o %< -lpthread -g"
         :sp
         :res -15
-        :term ./%<
+        :term time ./%<
     elseif &filetype == 'python'
         exec '!time ~/anaconda3/envs/python36/bin/python3.6 %'
     elseif &filetype == 'sh'
@@ -178,6 +178,8 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
 " Auto Code
 Plug 'Valloric/YouCompleteMe'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'kana/vim-operator-user'
 Plug 'rhysd/vim-clang-format'
@@ -193,11 +195,13 @@ Plug 'iamcco/markdown-preview.vim'
 Plug 'dhruvasagar/vim-table-mode'
 " 对齐指示线条
 Plug 'Yggdroot/indentLine', {'for':['python']} 
-" Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides',{'for':['python']}
 " 多彩括号
 Plug 'luochen1990/rainbow'
-" 剪切板提示
-Plug 'junegunn/vim-peekaboo'
+" 光速跳转
+Plug 'easymotion/vim-easymotion'
+" 剪切板提示(nevoim下出现问题)
+" Plug 'junegunn/vim-peekaboo'
 " Bookmarks
 Plug 'kshenoy/vim-signature'
 " FZF
@@ -229,6 +233,16 @@ autocmd FileType markdown
         \ let g:table_mode_align_char = ":"
 
 "===
+"=== vim-easy-montion
+"===
+map <Leader><leader>j <Plug>(easymotion-linebackward)
+map <Leader><Leader>k <Plug>(easymotion-j)
+map <Leader><Leader>i <Plug>(easymotion-k)
+map <Leader><leader>l <Plug>(easymotion-lineforward)
+" 重复上一次操作, 类似repeat插件, 很强大
+map <Leader><leader>. <Plug>(easymotion-repeat)
+
+"===
 "=== 注释插件,加半个空格
 "===
 let g:NERDSpaceDelims=1
@@ -249,7 +263,7 @@ autocmd FileType c,cpp,objc nnoremap <buffer><C-h> :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><C-h> :ClangFormat<CR>
 let g:clang_format#style_options = {
             \ "AlignTrailingComments" : "true",
-            \ "ColumnLimit" : 110,
+            \ "ColumnLimit" : 120,
             \ "PointerAlignment" : "Right",
             \ "AllowShortIfStatementsOnASingleLine" : "true",
             \ "AlignConsecutiveAssignments" : "true",
@@ -355,6 +369,51 @@ imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 "set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 "并将ycm_extra_conf.py拷贝到../build
 "在其中的compilation_database_folder添加./build目录
+
+"===
+"=== UltiSnips
+"===
+let g:UltiSnipsExpandTrigger="<tab>"
+" 使用 tab 切换下一个触发点，shit+tab 上一个触发点
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
+" 使用 UltiSnipsEdit 命令时垂直分割屏幕
+let g:UltiSnipsEditSplit="vertical"
+
+function! g:UltiSnips_Complete()
+  call UltiSnips#ExpandSnippet()
+  if g:ulti_expand_res == 0
+    if pumvisible()
+      return "\<C-n>"
+    else
+      call UltiSnips#JumpForwards()
+      if g:ulti_jump_forwards_res == 0
+        return "\<TAB>"
+      endif
+    endif
+  endif
+  return ""
+endfunction
+
+function! g:UltiSnips_Reverse()
+  call UltiSnips#JumpBackwards()
+  if g:ulti_jump_backwards_res == 0
+    return "\<C-P>"
+  endif
+
+  return ""
+endfunction
+
+
+if !exists("g:UltiSnipsJumpForwardTrigger")
+  let g:UltiSnipsJumpForwardTrigger = "<tab>"
+endif
+if !exists("g:UltiSnipsJumpBackwardTrigger")
+  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+endif
+
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger       . " <C-R>=g:UltiSnips_Complete()<cr>"
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
 
 "===
 "=== gitgutter
