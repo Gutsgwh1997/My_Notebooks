@@ -3,8 +3,6 @@
 "===
 " 关闭vi的一致性模式 避免以前版本的一些Bug和局限  
 set nocompatible  
-" 解决插入模式下delete/backspce键失效问题
-set backspace=2
 " 显示行号  
 set number  
 " 突出当前行
@@ -51,9 +49,6 @@ set wildmenu
 set ignorecase
 " 智能大小写
 set smartcase
-" should make scrolling faster
-set ttyfast
-set lazyredraw
 " 开启语法高亮功能  
 syntax on
 
@@ -117,7 +112,7 @@ noremap tti :+tabmove<CR>
 " Copy to system clipboard
 vnoremap Y "+y
 noremap P "+p
-" //快速搜索选中区域
+" '//'快速搜索选中区域
 vnoremap // y/<c-r>"<CR>
 " 取消搜索后的高亮
 noremap <LEADER><CR> :nohlsearch<CR>
@@ -179,7 +174,7 @@ func! CompileRunGcc()
     elseif &filetype == 'cpp'
         set splitbelow
         exec "!g++ -O3 -std=c++11 % -o %< -lpthread -g"
-        " :sp
+        :sp
         :term time ./%<
     elseif &filetype == 'python'
         exec '!time /usr/bin/python3.6 %'
@@ -217,8 +212,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-surround'
 Plug 'gcmt/wildfire.vim'
-Plug 'jbgutierrez/vim-better-comments',{'for':['cpp']}
 Plug 'mg979/vim-visual-multi'
+Plug 'jbgutierrez/vim-better-comments',{'for':['cpp']}
 " Git 
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -298,7 +293,7 @@ autocmd FileType c,cpp,objc nnoremap <buffer><C-h> :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><C-h> :ClangFormat<CR>
 let g:clang_format#style_options = {
             \ "AlignTrailingComments" : "true",
-            \ "ColumnLimit" : 140,
+            \ "ColumnLimit" : 120,
             \ "PointerAlignment" : "Right",
             \ "AllowShortIfStatementsOnASingleLine" : "true",
             \ "BreakConstructorInitializersBeforeComma" : "true",}
@@ -377,8 +372,6 @@ map <F4> :TagbarToggle<CR>
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 " python解释器的选择
 let g:ycm_server_python_interpreter='/usr/bin/python3.6'
-" turn off hover
-let g:ycm_auto_hover = ''
 " turn off YCM
 nnoremap <leader>b :let g:ycm_auto_trigger=0<CR>                
 " turn on YCM
@@ -513,7 +506,7 @@ let g:vm_leader                     = {'default': '\\', 'visual': '\\', 'buffer'
 let g:vm_maps                       = {}
 let g:vm_custom_motions             = {'j': 'h', 'l': 'l', 'i': 'k', 'k': 'j'}
 let g:vm_maps['i']                  = 'h'
-let g:vm_maps['i']                  = 'H'
+let g:vm_maps['I']                  = 'H'
 let g:vm_maps['find next']          = 'n'
 let g:vm_maps['find prev']          = 'N'
 let g:vm_maps['remove region']      = 'Q'
