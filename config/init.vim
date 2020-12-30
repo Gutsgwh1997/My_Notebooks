@@ -42,7 +42,8 @@ set expandtab
 " 增加缩进
 set shiftwidth=4
 " 字符过长禁止换行
-set nowrap
+" set nowrap
+set wrap
 " 给个菜单让你选择
 set wildmenu
 " 忽略大小写
@@ -186,6 +187,11 @@ func! CompileRunGcc()
 endfunc 
 
 "===
+"=== lazygit
+"===
+noremap <c-g> :tabe<CR>:-tabmove<CR>:terminal lazygit<CR>
+
+"===
 "=== 插件安装
 "===
 call plug#begin('~/.vim/plugged')
@@ -196,10 +202,13 @@ Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mhinz/vim-startify'
+" Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
+" Plug 'RRethy/vim-illuminate'
 " Document Manager
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
+" Plug 'rhysd/accelerated-jk'
 " Auto Code
 Plug 'ycm-core/YouCompleteMe'
 Plug 'SirVer/ultisnips'
@@ -220,7 +229,7 @@ Plug 'tpope/vim-fugitive'
 " Markdown
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.vim'
-Plug 'dhruvasagar/vim-table-mode'
+" Plug 'dhruvasagar/vim-table-mode'
 " 对齐指示线条
 Plug 'Yggdroot/indentLine', {'for':['python']} 
 Plug 'nathanaelkane/vim-indent-guides',{'for':['python']}
@@ -233,10 +242,11 @@ Plug 'junegunn/vim-peekaboo'
 " Bookmarks
 Plug 'kshenoy/vim-signature'
 " 历史更改
-Plug 'mbbill/undotree'
+" Plug 'mbbill/undotree'
 " FZF
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 " Leetcode
 " Plug 'ianding1/leetcode.vim'
 call plug#end()
@@ -250,6 +260,13 @@ nmap <silent> <F8> <Plug>MarkdownPreview        " for normal mode
 imap <silent> <F8> <Plug>MarkdownPreview        " for insert mode
 nmap <silent> <F9> <Plug>StopMarkdownPreview    " for normal mode
 imap <silent> <F9> <Plug>StopMarkdownPreview    " for insert mode
+
+"===
+"=== accelerated-jk
+"===
+" nmap k <Plug>(accelerated_jk_gj)
+" nmap i <Plug>(accelerated_jk_gk)
+" let g:accelerated_jk_acceleration_table = [2, 4, 7, 15]
 
 "===
 "=== vim-table-mode
@@ -285,6 +302,11 @@ let g:NERDSpaceDelims=1
 "===
 nmap [c <Plug>(GitGutterPrevHunk)
 nmap ]c <Plug>(GitGutterNextHunk)
+
+" ===
+" === vim-illuminate
+" ===
+let g:Illuminate_delay = 750
 
 "===
 "=== clang-format
@@ -480,6 +502,15 @@ let g:python_highlight_all = 1
 "===
 nnoremap <silent> <C-f> :Files<CR>
 nnoremap <F12> :Lines<CR>
+
+"===
+"=== Ack & Ag
+"===
+if executable('ag')
+ let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+command Todo Ack! TODO
+
 " ===
 " === Undotree
 " ===
