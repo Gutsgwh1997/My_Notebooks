@@ -242,6 +242,7 @@ Plug 'mbbill/undotree'
 " FZF
 Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 " Leetcode
 " Plug 'ianding1/leetcode.vim'
 call plug#end()
@@ -297,6 +298,7 @@ nmap ]c <Plug>(GitGutterNextHunk)
 autocmd FileType c,cpp,objc nnoremap <buffer><C-h> :<C-u>ClangFormat<CR>
 autocmd FileType c,cpp,objc vnoremap <buffer><C-h> :ClangFormat<CR>
 let g:clang_format#style_options = {
+            \ "BasedOnStyle" : "Google",
             \ "AlignTrailingComments" : "true",
             \ "ColumnLimit" : 140,
             \ "PointerAlignment" : "Right",
@@ -487,6 +489,15 @@ let g:python_highlight_all = 1
 "===
 nnoremap <silent> <C-f> :Files<CR>
 nnoremap <F12> :Lines<CR>
+
+"===
+"=== Ack & Ag
+"===
+if executable('ag')
+ let g:ackprg = 'ag --nogroup --nocolor --column'
+endif
+command Todo Ack! TODO
+
 " ===
 " === Undotree
 " ===

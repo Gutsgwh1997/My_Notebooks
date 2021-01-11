@@ -1,0 +1,40 @@
+wq
+trash
+open_with 
+rename include
+search w3m
+bulkrename 
+cd st
+cd /media/gwh/学习资料/研究生课题/无人车/apollo/cyber
+open_with gedit
+cd .
+delete yaml_parser.h
+trash encryptor_wrapper.h
+delete encryptor_wrapper.h
+delete *.h
+delete math_base.h
+delete math_mul.h
+delete libmath_base.so
+delete BUILD
+rename proto_msg_translator.h
+rename modules1
+rename atomic_configure
+rename test.cpp
+find 
+find pc
+cd /home/gwh/Desktop/RS_SDK_V1.2/rs_sdk
+shell bazel clean
+search libpro
+rename front_end_flow.cpp
+
+delete st-scrollback-20200419-72e3f6c.diff_
+trash dwm.1_
+delete dwm.1_
+trash package.xml~
+delete CMakeLists.txt~
+delete package.xml~
+open_with vim
+find cs
+shell 
+open_with%space
+open_with nvim
