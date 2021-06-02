@@ -118,7 +118,7 @@ noremap tti :+tabmove<CR>
 vnoremap Y "+y
 noremap P "+p
 " //快速搜索选中区域
-vnoremap // y/<c-r>"<CR>
+vnoremap ff y/<c-r>"<CR>
 " 取消搜索后的高亮
 noremap <LEADER><CR> :nohlsearch<CR>
 " Buffer的一些操作
