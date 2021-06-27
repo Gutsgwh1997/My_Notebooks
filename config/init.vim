@@ -42,8 +42,8 @@ set expandtab
 " 增加缩进
 set shiftwidth=4
 " 字符过长禁止换行
-" set nowrap
-set wrap
+set nowrap
+" set wrap
 " 给个菜单让你选择
 set wildmenu
 " 忽略大小写
@@ -52,6 +52,8 @@ set ignorecase
 set smartcase
 " 开启语法高亮功能  
 syntax on
+" maxmempattern
+set maxmempattern=2000
 
 let mapleader =" "
 " ===
@@ -101,11 +103,11 @@ nnoremap <C-J> <C-W><C-H>
 " Create a new tab with tu
 noremap tn :tabe<CR>
 " Move around tabs with tn and ti
-noremap tk :-tabnext<CR>
-noremap ti :+tabnext<CR>
+noremap tj :-tabnext<CR>
+noremap tl :+tabnext<CR>
 " Move the tabs with tmn and tmi
-noremap ttk :-tabmove<CR>
-noremap tti :+tabmove<CR>
+noremap ttj :-tabmove<CR>
+noremap ttl :+tabmove<CR>
 
 "===
 "=== 其他的快捷键
@@ -113,8 +115,8 @@ noremap tti :+tabmove<CR>
 " Copy to system clipboard
 vnoremap Y "+y
 noremap P "+p
-" '//'快速搜索选中区域
-vnoremap // y/<c-r>"<CR>
+" 'ff'快速搜索选中区域
+vnoremap ff y/<c-r>"<CR>
 " 取消搜索后的高亮
 noremap <LEADER><CR> :nohlsearch<CR>
 " Buffer的一些操作

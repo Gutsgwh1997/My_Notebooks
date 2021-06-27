@@ -37,4 +37,7 @@ open_with vim
 find cs
 shell 
 open_with%space
+open_with%
+open_with%spacepcl_viewer
+open_with pcl_viewer
 open_with nvim
