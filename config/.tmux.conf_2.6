@@ -1,0 +1,75 @@
+# 插件
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+#将前缀改为C-a
+unbind C-b
+set -g prefix C-a
+
+#将r 设置为加载配置文件，并显示"reloaded!"信息
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+bind e neww -n tmux-config "\${EDITOR:-vim} ~/.tmux.conf"
+
+#up
+bind-key -r i select-pane -U
+#down
+bind-key -r k select-pane -D
+#left
+bind-key -r j select-pane -L
+#right
+bind-key -r l select-pane -R
+
+# 原始的配置状态栏
+set -g message-style "bg=#00346e, fg=#ffffd7"  # tomorrow night blue, base3
+
+set -g status-style "bg=#00346e, fg=#ffffd7"   # tomorrow night blue, base3
+set -g status-left "#[bg=#0087ff] ❐ #S "       # blue
+set -g status-left-length 400
+set -g status-right "#[fg=green,bg=default,bright]#{?client_prefix, ~ , } #[fg=white,bg=red,bright] %Y-%m-%d %H:%M %a "
+set -g status-right-length 600
+
+set -wg window-status-format " #I:#W#F "
+set -wg window-status-current-format " #I:#W#F "
+set -wg window-status-separator ""
+set -wg window-status-current-style "bg=red" # red
+set -wg window-status-last-style "fg=yellow"
+
+
+set -g base-index         1     # 窗口编号从 1 开始计数
+set -g display-panes-time 10000 # PREFIX-Q 显示编号的驻留时长，单位 ms
+set -g mouse              on    # 鼠标
+set -g pane-base-index    1     # 窗格编号从 1 开始计数
+set -g renumber-windows   on    # 关掉某个窗口后，编号重排
+
+setw -g allow-rename      off   # 禁止活动进程修改窗口名
+setw -g automatic-rename  off   # 禁止自动命名新窗口
+setw -g mode-keys         vi    # 进入复制模式的时候使用 vi 键位（默认是 EMACS）
+
+set -g message-command-style fg=yellow,bold,underscore,blink
+set -g message-command-style bg=black,fg=default,noreverse
+
+#复制与粘贴
+bind -T copy-mode-vi v send-keys -X begin-selection
+bind -T copy-mode-vi C-v send-keys -X rectangle-toggle
+bind -T copy-mode-vi j send-keys -X cursor-left
+bind -T copy-mode-vi l send-keys -X cursor-right
+bind -T copy-mode-vi i send-keys -X cursor-up
+bind -T copy-mode-vi k send-keys -X cursor-down
+bind -T copy-mode-vi e send-keys -X next-word-end
+bind -T copy-mode-vi I send-keys -N 5 -X cursor-up
+bind -T copy-mode-vi K send-keys -N 5 -X cursor-down
+bind -T copy-mode-vi J send-keys -X start-of-line
+bind -T copy-mode-vi L send-keys -X end-of-line
+bind -T copy-mode-vi Y send-keys -X copy-end-of-line
+bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+bind -T copy-mode-vi n send-keys -X search-again
+bind -T copy-mode-vi N send-keys -X search-reverse
+
+#新建window和pane之后更新zashrc
+bind c new-window \; send-keys "source ~/.zshrc; clear" Enter
+# bind - splitw -v \; send-keys "source ~/.zshrc; clear" Enter
+# bind | splitw -h \; send-keys "source ~/.zshrc; clear" Enter
+bind '"' split-window -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+
+run '~/.tmux/plugins/tpm/tpm'
